@@ -36,14 +36,20 @@ const ShoeCard = ({
       <Wrapper>
         <ImageWrapper>
           <Image alt="" src={imageSrc} />
+          { variant === "on-sale" && <Sale>Sale</Sale>}
+          { variant === "new-release" && <JustReleased>Just Released!</JustReleased>}
         </ImageWrapper>
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
-          <Price>{formatPrice(price)}</Price>
+          { variant === "on-sale"
+            ? <OldPrice>{formatPrice(price)}</OldPrice>
+            : <Price>{formatPrice(price)}</Price>}
         </Row>
         <Row>
           <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
+          { variant === "on-sale" &&
+          <SalePrice>{formatPrice(salePrice)}</SalePrice> }
         </Row>
       </Wrapper>
     </Link>
@@ -53,26 +59,60 @@ const ShoeCard = ({
 const Link = styled.a`
   text-decoration: none;
   color: inherit;
+  margin: 0 36px 30px 0;
+  flex: 1 1 340px;
 `;
 
-const Wrapper = styled.article``;
+const Wrapper = styled.article`
+`;
+
+const JustReleased = styled.div`
+  color: ${COLORS.white};
+  background-color: ${COLORS.secondary};
+  position: absolute;
+  top: 12px;
+  right: -4px;
+  padding: 9px;
+  border-radius: 4px;
+  font-weight: ${WEIGHTS.bold};
+`;
+const Sale = styled.div`
+  color: ${COLORS.white};
+  background-color: ${COLORS.primary};
+  position: absolute;
+  top: 12px;
+  right: -4px;
+  padding: 9px;
+  border-radius: 4px;
+  font-weight: ${WEIGHTS.bold};
+`;
 
 const ImageWrapper = styled.div`
   position: relative;
 `;
 
-const Image = styled.img``;
+const Image = styled.img`
+  width: 100%;
+  border-radius: 16px 16px 4px 4px;
+`;
 
 const Row = styled.div`
   font-size: 1rem;
+  display: flex;
 `;
 
 const Name = styled.h3`
   font-weight: ${WEIGHTS.medium};
   color: ${COLORS.gray[900]};
+  margin-right: auto;
 `;
 
-const Price = styled.span``;
+const OldPrice = styled.span`
+  color: ${COLORS.gray[300]};
+  text-decoration: line-through;
+`;
+const Price = styled.span`
+`;
 
 const ColorInfo = styled.p`
   color: ${COLORS.gray[700]};
@@ -81,6 +121,7 @@ const ColorInfo = styled.p`
 const SalePrice = styled.span`
   font-weight: ${WEIGHTS.medium};
   color: ${COLORS.primary};
+  margin-left: auto;
 `;
 
 export default ShoeCard;
